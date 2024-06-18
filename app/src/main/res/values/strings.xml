@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ForAndroid</string>
+
+    <string name="no_product_activity_add_product">Product with this name have not been found</string>
+    <string name="searching_activity_add_product">Searching…</string>
+    <string name="welcome_activity_add_product">Enter product name to find</string>
+    <string name="close_btn_activity_add_product">Close</string>
+    <string name="find_btn_activity_add_product">Find</string>
+
+    <string name="header_diet_maker">Enter amount of calories and we make your diet</string>
+    <string name="close_diet_maker">Close</string>
+    <string name="make_diet_maker">Make</string>
+</resources>
