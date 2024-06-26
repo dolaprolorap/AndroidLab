@@ -1,14 +1,16 @@
-package com.example.forandroid
+package com.example.forandroid.presentation.AddProductActivity
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.forandroid.data.api.ProductApiNinjas.ProductApi
+import com.example.forandroid.R
+import com.example.forandroid.data.repository.ProductRepository.ProductRepository
 
 class AddProductActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +19,7 @@ class AddProductActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_product)
 
         val searchButton = findViewById<Button>(R.id.searchBtn)
-        val productApi = ProductApi()
+        val productRepo = ProductRepository(ProductApi())
         val inputET = findViewById<EditText>(R.id.inputET)
         val describeTV = findViewById<TextView>(R.id.headerTV)
         val closeButton = findViewById<Button>(R.id.closeBtn)
@@ -27,7 +29,7 @@ class AddProductActivity : AppCompatActivity() {
         searchButton.setOnClickListener {
             val prodName = inputET.text.toString()
             describeTV.text = getString(R.string.searching_activity_add_product)
-            productApi.getProduct(prodName) { productData ->
+            productRepo.getProduct(prodName) { productData ->
                 if (productData != null) {
                     val intent = Intent()
                     intent.putExtra("product_name", productData)

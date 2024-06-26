@@ -1,7 +1,8 @@
-package com.example.forandroid
+package com.example.forandroid.data.repository.ProductRepository
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.example.forandroid.data.api.ProductApiNinjas.ProductApiData
 import java.security.InvalidParameterException
 
 class ProductData (var name: String,
@@ -13,10 +14,10 @@ class ProductData (var name: String,
 
     constructor(productApiData: ProductApiData, weight: Float = 100f) : this(
         productApiData.name,
-        productApiData.calories / productApiData.serving_size_g,
-        productApiData.protein_g / productApiData.serving_size_g,
-        productApiData.fat_total_g / productApiData.serving_size_g,
-        productApiData.carbohydrates_total_g / productApiData.serving_size_g,
+        productApiData.fat_saturated_g / weight,
+        productApiData.cholesterol_mg / weight,
+        productApiData.fat_total_g / weight,
+        productApiData.carbohydrates_total_g / weight,
         weight
     )
 

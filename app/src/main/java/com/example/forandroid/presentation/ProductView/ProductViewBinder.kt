@@ -1,12 +1,14 @@
-package com.example.forandroid
+package com.example.forandroid.presentation.ProductView
+
+import com.example.forandroid.domain.UseCase.MakeDietUseCase
 
 class ProductViewBinder {
-    fun bindMakeDiet(productStateList: List<ProductViewState>, calories: Int, count: Int = 5) {
+    fun bindMakeDiet(productStateList: List<ProductViewModel>, calories: Int, count: Int = 5) {
         val productDataList = productStateList.map {
             it.productData
         }
-        val dietMaker = DietMaker()
-        val diet = dietMaker.makeDiet(productDataList, calories, count)
+        val makeDietUseCase = MakeDietUseCase(productDataList)
+        val diet = makeDietUseCase(calories, count)
         for (productState in productStateList) {
             for (dietProduct in diet) {
                 if (productState.productData.name == dietProduct.name) {

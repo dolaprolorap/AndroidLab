@@ -1,14 +1,16 @@
-package com.example.forandroid
+package com.example.forandroid.presentation.ProductView
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.example.forandroid.data.repository.ProductRepository.ProductData
 import com.example.forandroid.databinding.ProductViewBinding
+import com.example.forandroid.presentation.Animators.LayoutAnimator
 
 class ProductView (
     context : Context,
-    productViewState : ProductViewState,
+    productViewModel : ProductViewModel,
     private val animator: LayoutAnimator = LayoutAnimator()
 ): LinearLayout(context) {
     private val hiddenWidth = 1300
@@ -16,12 +18,12 @@ class ProductView (
     private val activeWidth = 1300
     private val activeHeight = ViewGroup.LayoutParams.WRAP_CONTENT
 
-    var productViewState : ProductViewState = productViewState
+    var productViewModel : ProductViewModel = productViewModel
         set(value) {
             field = value
-            productViewState.onStateChange += this::stateChange
+            productViewModel.onStateChange += this::stateChange
             bind()
-            productViewState.update()
+            productViewModel.update()
         }
 
     private var binding: ProductViewBinding =
@@ -62,44 +64,44 @@ class ProductView (
     }
 
     private fun updateViewData() {
-        updateText(productViewState.productData)
-        updateVisibility(productViewState.isVisible)
-        updateSizes(productViewState.isVisible)
+        updateText(productViewModel.productData)
+        updateVisibility(productViewModel.isVisible)
+        updateSizes(productViewModel.isVisible)
     }
 
     private fun bind() {
         binding.apply {
             binding.moreProductBtn.setOnClickListener {
-                productViewState.productData.weight += 100f
-                productViewState.update()
+                productViewModel.productData.weight += 100f
+                productViewModel.update()
             }
 
             binding.lessProductBtn.setOnClickListener {
-                if (productViewState.productData.weight > 100) {
-                    productViewState.productData.weight -= 100f
+                if (productViewModel.productData.weight > 100) {
+                    productViewModel.productData.weight -= 100f
                 }
                 else {
                     animator.animate(binding.productLL, hiddenWidth, hiddenHeight)
-                    productViewState.toDefault()
+                    productViewModel.toDefault()
                 }
-                productViewState.update()
+                productViewModel.update()
             }
 
             binding.productLL.setOnClickListener {
-                if (productViewState.isVisible) {
+                if (productViewModel.isVisible) {
                     animator.animate(binding.productLL, hiddenWidth, hiddenHeight)
-                    productViewState.toDefault()
+                    productViewModel.toDefault()
                 }
                 else {
                     animator.animate(binding.productLL, activeWidth, activeHeight)
-                    productViewState.isVisible = true
+                    productViewModel.isVisible = true
                 }
-                productViewState.update()
+                productViewModel.update()
             }
         }
     }
 
-    private fun stateChange(productViewState: ProductViewState) {
+    private fun stateChange(productViewModel: ProductViewModel) {
         updateViewData()
     }
 

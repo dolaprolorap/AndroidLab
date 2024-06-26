@@ -1,4 +1,4 @@
-package com.example.forandroid
+package com.example.forandroid.presentation.Animators
 
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator

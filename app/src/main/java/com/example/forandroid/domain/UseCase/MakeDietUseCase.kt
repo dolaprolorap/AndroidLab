@@ -1,16 +1,24 @@
-package com.example.forandroid
+package com.example.forandroid.domain.UseCase
 
+import com.example.forandroid.data.repository.ProductRepository.ProductData
 import kotlin.math.min
 import kotlin.math.round
 import kotlin.random.Random
 
-class DietMaker {
-    fun makeDiet(productDataList: List<ProductData>, calories: Int, count: Int): List<ProductData> {
+class MakeDietUseCase(private val productDataList: List<ProductData>) {
+
+    init {
+        if (productDataList.isEmpty()) {
+            throw IllegalArgumentException("productDataList can not be empty")
+        }
+    }
+
+    operator fun invoke(calories: Int, count: Int): List<ProductData> {
         if (count <= 0) {
             throw IllegalArgumentException("count can not be less than zero")
         }
-        if (productDataList.isEmpty()) {
-            throw IllegalArgumentException("productDataList can not be empty")
+        if (calories <= 0) {
+            throw IllegalArgumentException("calories can not be less than zero")
         }
 
         val finalProductList = mutableListOf<ProductData>()
@@ -21,7 +29,11 @@ class DietMaker {
 
         for (i in 1..realCount) {
             if(productDataList.isEmpty()) break
-            val randInd = Random.nextInt(newProductList.size)
+            var randInd = Random.nextInt(newProductList.size)
+            while(newProductList[randInd].calories == 0f) {
+                newProductList.removeAt(randInd)
+                randInd = Random.nextInt(newProductList.size)
+            }
             val randProduct = ProductData(newProductList[randInd])
             newProductList.removeAt(randInd)
             val weight = round((caloriesPerProduct / randProduct.caloriesPer1g) / 100) * 100

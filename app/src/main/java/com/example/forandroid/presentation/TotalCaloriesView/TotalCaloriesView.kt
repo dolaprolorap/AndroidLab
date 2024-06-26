@@ -1,13 +1,14 @@
-package com.example.forandroid
+package com.example.forandroid.presentation.TotalCaloriesView
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import com.example.forandroid.data.repository.ProductRepository.ProductData
+import com.example.forandroid.R
 import com.example.forandroid.databinding.TotalCaloriesViewBinding
+import com.example.forandroid.domain.Events.Event0
 
 class TotalCaloriesView : RelativeLayout {
     var attributeSet: AttributeSet? = null

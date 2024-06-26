@@ -1,7 +1,8 @@
-package com.example.forandroid
+package com.example.forandroid.data.api.ProductApiNinjas
 
-import ApiService
 import android.util.Log
+import com.example.forandroid.data.repository.ProductRepository.IProductApi
+import com.example.forandroid.data.repository.ProductRepository.ProductData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,9 +17,9 @@ class ProductApi(
     .baseUrl(apiUrl)
     .addConverterFactory(GsonConverterFactory.create())
     .build(),
-    private val apiService : ApiService = retrofit.create(ApiService::class.java)) {
+    private val apiService : ApiService = retrofit.create(ApiService::class.java)) : IProductApi {
 
-    fun getProduct(productName : String, callback : ((ProductData?) -> Unit)) {
+    override fun getProduct(productName : String, callback : ((ProductData?) -> Unit)) {
         val products : Call<List<ProductApiData>> = apiService.getProducts(productName, apiKey)
         products.enqueue(object : Callback<List<ProductApiData>> {
             override fun onResponse(call: Call<List<ProductApiData>>, response: Response<List<ProductApiData>>) {
@@ -42,7 +43,7 @@ class ProductApi(
         })
     }
 
-    fun getProducts(productNames: List<String>, callback: (List<ProductData>) -> Unit) {
+    override fun getProducts(productNames: List<String>, callback: (List<ProductData>) -> Unit) {
         val productNamesConc : String = productNames.joinToString(" and ")
         val products : Call<List<ProductApiData>> = apiService.getProducts(productNamesConc, apiKey)
         products.enqueue(object : Callback<List<ProductApiData>> {

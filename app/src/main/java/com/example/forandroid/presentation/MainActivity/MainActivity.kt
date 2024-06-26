@@ -1,4 +1,4 @@
-package com.example.forandroid
+package com.example.forandroid.presentation.MainActivity
 
 import android.os.Bundle
 import android.widget.ListView
@@ -6,13 +6,22 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.forandroid.data.api.ProductApiNinjas.ProductApi
+import com.example.forandroid.R
+import com.example.forandroid.data.repository.ProductRepository.ProductRepository
+import com.example.forandroid.presentation.AddProductActivity.AddProductContract
+import com.example.forandroid.presentation.DietMakerActivity.DietMakerContract
+import com.example.forandroid.presentation.ProductView.ProductAdapter
+import com.example.forandroid.presentation.ProductView.ProductViewModel
+import com.example.forandroid.presentation.ProductView.ProductViewBinder
+import com.example.forandroid.presentation.TotalCaloriesView.TotalCaloriesView
 
 class MainActivity : AppCompatActivity() {
     private val getContentAddProduct = registerForActivityResult(AddProductContract()) {
         if(it != null) {
-            val productViewState = ProductViewState(it, false)
-            productViewState.onStateChange += ::onChangeProductViewVisibility
-            adapter?.add(productViewState)
+            val productViewModel = ProductViewModel(it, false)
+            productViewModel.onStateChange += ::onChangeProductViewVisibility
+            adapter?.add(productViewModel)
             adapter?.notifyDataSetChanged()
         }
     }
@@ -74,16 +83,16 @@ class MainActivity : AppCompatActivity() {
 
         productsLV?.adapter = adapter
 
-        val productApi = ProductApi()
-        productApi.getProducts(listOfProducts) { prods ->
-            adapter?.addAll(prods.map { ProductViewState(it, false) })
+        val productRepo = ProductRepository(ProductApi())
+        productRepo.getProducts(listOfProducts) { prods ->
+            adapter?.addAll(prods.map { ProductViewModel(it, false) })
             adapter?.getAllProductViewState()?.forEach {
                 it.onStateChange += ::onChangeProductViewVisibility
             }
         }
     }
 
-    fun onChangeProductViewVisibility(pv : ProductViewState) {
+    fun onChangeProductViewVisibility(pv : ProductViewModel) {
         if(pv.isVisible && !totalCaloriesView?.hasProduct(pv.productData)!!) {
             totalCaloriesView?.addProduct(pv.productData)
         }

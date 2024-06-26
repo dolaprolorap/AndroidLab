@@ -1,4 +1,4 @@
-package com.example.forandroid
+package com.example.forandroid.presentation.DietMakerActivity
 
 import android.app.Activity
 import android.content.Context
